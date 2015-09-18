@@ -19,9 +19,9 @@ Rails.application.routes.draw do
   # Frontend
   resource :categories, only: [] do
     get '/' => 'categories#index'
-    get '/:slug' => 'categories#show', as: :show_slug
+    # get '/:slug' => 'categories#show', as: :show_slug
     get '/:id/show' => 'categories#show', as: :show_id
-    get '/:category_slug/products/:slug' => 'products#show', as: :show_product_slug
+    # get '/:category_slug/products/:slug' => 'products#show', as: :show_product_slug
     match '/:slug/tag/*slug_tags' => 'categories#tags', as: :tags, via: [:get]
   end
 
@@ -70,6 +70,13 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # New URL
+  get '/:slug'                                          => 'categories#show', as: :show_slug
+  get '/:slug'                                          => 'categories#show', as: :show_slug_categories
+  get '/:parent_category_slug/sub-:slug'                => 'categories#show', as: :show_child_slug_categories
+  get '/:category_slug/:slug'                           => 'products#show', as: :show_product_slug_categories
+  get '/:parent_category_slug/sub-:category_slug/:slug' => 'products#show', as: :show_child_product_slug
 
   # You can have the root of your site routed with "root"
   root 'home#index'

@@ -30,14 +30,18 @@ module InitializeSlug
     href = object.slug
 
     if !href.nil? && !link?(object.slug)
-      helpers = Rails.application.routes.url_helpers
 
+      helpers = Rails.application.routes.url_helpers
       if object.class == Category
-        href = helpers.show_slug_categories_path(object.slug)
+        if object.parent
+          href = helpers.show_child_slug_categories_path(object.parent.slug, object.slug)
+        else
+          href = helpers.show_slug_categories_path(object.slug)
+        end
       elsif object.class == Product
         href = helpers.show_slug_products_path(object.slug)
         if object.categories.any?
-          href = helpers.show_product_slug_categories_path(object.categories.first.slug, object.slug)
+          href = helpers.show_product_slug_categories_path(object.categories.last.slug, object.slug)
         end
       end
     end
